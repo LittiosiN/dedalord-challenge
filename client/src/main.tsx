@@ -4,7 +4,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom"
-import AuthPage from './AuthPage'
+import AuthPage from './pages/AuthPage'
 import './index.css'
 
 const router = createBrowserRouter([
