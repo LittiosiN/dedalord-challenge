@@ -6,7 +6,7 @@ function AuthPage() {
   const [showRegister, setShowRegister] = useState<boolean>(false)
   return (
     <>
-      <div className='w-screen h-screen pt-24 bg-gray-200 items-center flex flex-col align-top'>
+      <main className='w-screen h-screen pt-24 bg-gray-200 items-center flex flex-col align-top'>
         <Logo />
         <section>
           <>
@@ -15,9 +15,16 @@ function AuthPage() {
             ) : (
               <LoginForm />
             )}
+            <div 
+              className='text-sm mt-2 text-center'
+            >
+              or go to <span 
+              className='font-semibold cursor-pointer'
+              onClick={() => setShowRegister(!showRegister)}>{`${showRegister ? 'Register' : 'Login'}`}</span>
+            </div>
           </>
         </section>
-      </div>
+      </main>
     </>
   )
 }
