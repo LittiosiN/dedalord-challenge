@@ -32,7 +32,7 @@ export class UsersDB {
   }
 
   getUsers() {
-    const arr = Array.from(this.users, ([name, value]) => ({ name, value }));
+    const arr = Array.from(this.users, ([username, value]) => ({ username, value }));
     return arr
   }
 
