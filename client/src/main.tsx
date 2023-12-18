@@ -1,21 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
-  createBrowserRouter,
-  RouterProvider,
+  // createBrowserRouter,
+  // RouterProvider,
+  HashRouter,
+  Routes,
+  Route,
 } from "react-router-dom"
 import AuthPage from './pages/AuthPage'
+import ChatPage from './pages/ChatPage'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './index.css'
+import { User } from './types/Auth'
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <AuthPage />,
-  },
-]);
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <AuthPage />,
+//   },
+//   {
+//     path: "/chats",
+//     element: <ChatPage />,
+//   },
+// ]);
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
-)
+const Main = () => {
+  const [user, setUser] = useState<User|null>(null)
+
+  return(
+    <React.StrictMode>
+      <>
+        <HashRouter>
+          <Routes>
+            <Route path='/' element={ <AuthPage setUser={setUser}/> } />
+            <Route path='/chats' element={ <ChatPage user={user}/> } />
+          </Routes>
+        </HashRouter>
+        {/* <RouterProvider router={router} /> */}
+        <ToastContainer />
+      </>
+  </React.StrictMode>
+  )
+}
+
+ReactDOM.createRoot(document.getElementById('root')!).render(<Main />)

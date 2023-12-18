@@ -6,23 +6,30 @@ import {
 } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-
-interface iLoginInputs {
-  username: string
-  password: string
-}
+import { toast } from "react-toastify"
+import { User, iLoginInputs } from "../../types/Auth"
+import { loginUser } from "../../data/api/auth"
+import { Response } from "../../types/Response"
+import { useNavigate } from "react-router-dom";
 
 const Loginschema = yup.object().shape({
   username: yup.string().default('').required("Username is required").min(3, 'must be at least 3 characters long'),
   password: yup.string().default('').required("Password is required")
 })
 
-const LoginForm = () => {
+interface LoginFormProps {
+  setUser: (user:User|null) => void
+}
+
+const LoginForm:React.FC<LoginFormProps> = ({setUser}) => {
   const [loading, setLoading] = useState<boolean>(false)
+  const navigate = useNavigate();
+
   // form
   const {
     register,
     handleSubmit,
+    reset,
     formState: {
       errors,
     } 
@@ -34,6 +41,21 @@ const LoginForm = () => {
   const onSubmit = (data:iLoginInputs) => {
     setLoading(true)
     console.log("login with data", data)
+    loginUser(data).then((res:Response) => {
+      if (!res.ok) {
+        console.log("error", res)
+        toast.error(res.message,{position: toast.POSITION.TOP_CENTER})
+        reset({
+          username: '',
+          password: '',
+        })
+        return
+      }
+      toast.info(res.message,{position: toast.POSITION.TOP_CENTER})
+      console.log("logged", res)
+      setUser(res.data as User)
+      navigate("/chats")
+    }).finally(() => setLoading(false))
     // call login post
   }
 

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import {toast} from 'react-toastify'
 import Button from "../Button"
 import FormInput from "./FormInput"
 import { 
@@ -6,12 +7,9 @@ import {
 } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-
-interface iRegisterInputs {
-  username: string
-  password: string
-  passwordConfirmation: string
-}
+import { iRegisterInputs } from "../../types/Auth"
+import { registerUser } from "../../data/api/auth"
+import { Response } from "../../types/Response"
 
 const Registerschema = yup.object().shape({
   username: yup.string().default('').required("Username is required").min(3, 'must be at least 3 characters long'),
@@ -20,12 +18,18 @@ const Registerschema = yup.object().shape({
      .oneOf([yup.ref('password')], 'Passwords must match')
 })
 
-const RegisterForm = () => {
+interface RegisterFormProps {
+  goToLogin: () => void
+}
+
+const RegisterForm:React.FC<RegisterFormProps> = ({goToLogin}) => {
   const [loading, setLoading] = useState<boolean>(false)
+  
   // form
   const {
     register,
     handleSubmit,
+    reset,
     formState: {
       errors,
     } 
@@ -33,10 +37,23 @@ const RegisterForm = () => {
     resolver: yupResolver(Registerschema),
   })
 
-
   const onSubmit = (data:iRegisterInputs) => {
     setLoading(true)
     console.log("login with data", data)
+    registerUser(data).then((res:Response) => {
+      if (!res.ok) {
+        console.log("error", res)
+        toast.error(res.message,{position: toast.POSITION.TOP_CENTER})
+        reset({
+          username: '',
+          password: '',
+          passwordConfirmation: '',
+        })
+        return
+      }
+      toast.info(res.message,{position: toast.POSITION.TOP_CENTER})
+      goToLogin()
+    }).finally(() => setLoading(false))
     // call login post
   }
 
