@@ -7,17 +7,20 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 
-interface iLoginInputs {
+interface iRegisterInputs {
   username: string
   password: string
+  passwordConfirmation: string
 }
 
-const Loginschema = yup.object().shape({
+const Registerschema = yup.object().shape({
   username: yup.string().default('').required("Username is required").min(3, 'must be at least 3 characters long'),
-  password: yup.string().default('').required("Password is required")
+  password: yup.string().default('').required("Password is required"),
+  passwordConfirmation: yup.string().required("Password confirmation is required")
+     .oneOf([yup.ref('password')], 'Passwords must match')
 })
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const [loading, setLoading] = useState<boolean>(false)
   // form
   const {
@@ -26,12 +29,12 @@ const LoginForm = () => {
     formState: {
       errors,
     } 
-  } = useForm<iLoginInputs>({
-    resolver: yupResolver(Loginschema),
+  } = useForm<iRegisterInputs>({
+    resolver: yupResolver(Registerschema),
   })
 
 
-  const onSubmit = (data:iLoginInputs) => {
+  const onSubmit = (data:iRegisterInputs) => {
     setLoading(true)
     console.log("login with data", data)
     // call login post
@@ -78,13 +81,21 @@ const LoginForm = () => {
               register={register}
               errors={errors}
             />
+            <FormInput
+              label="Confirm your password"
+              id="passwordConfirmation"
+              type="password"
+              disabled={loading}
+              register={register}
+              errors={errors}
+            />
           </div>
           <Button
             type="submit"
             fullWidth
             disabled={loading}
           >
-            Login
+            Register
           </Button>
         </form>
       </div>
@@ -92,4 +103,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm
+export default RegisterForm

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import LoginForm from '../components/form/LoginForm'
 import Logo from '../components/Logo'
+import RegisterForm from '../components/form/RegisterForm'
 
 function AuthPage() {
   const [showRegister, setShowRegister] = useState<boolean>(false)
@@ -11,7 +12,7 @@ function AuthPage() {
         <section>
           <>
             {showRegister ? (
-              <div>Soy form de registro</div>
+              <RegisterForm />
             ) : (
               <LoginForm />
             )}
@@ -20,7 +21,7 @@ function AuthPage() {
             >
               or go to <span 
               className='font-semibold cursor-pointer'
-              onClick={() => setShowRegister(!showRegister)}>{`${showRegister ? 'Register' : 'Login'}`}</span>
+              onClick={() => setShowRegister(!showRegister)}>{`${showRegister ? 'Login' : 'Register'}`}</span>
             </div>
           </>
         </section>
