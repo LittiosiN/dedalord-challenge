@@ -1,10 +1,8 @@
-import { User } from "./User"
-
 export type Message = {
   from: string
   to: string
   message: string
-  timestamp: string
+  timestamp?: string
 }
 
 export class MessageDB {
@@ -22,8 +20,13 @@ export class MessageDB {
     return MessageDB.instance
   }
 
-  getMessages (username:string):Map<string, Message[]> | undefined {
-    return this.messages.get(username)
+  getMessages (username:string):{username:string, value:Message[]}[] {
+    const userMap = this.messages.get(username)
+    if (!userMap) {
+      return []
+    }
+    const arr = Array.from(userMap, ([username, value]) => ({username, value}))
+    return arr
   }
 
 
