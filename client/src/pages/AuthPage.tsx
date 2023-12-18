@@ -2,8 +2,13 @@ import { useState } from 'react'
 import LoginForm from '../components/form/LoginForm'
 import Logo from '../components/Logo'
 import RegisterForm from '../components/form/RegisterForm'
+import { User } from '../types/Auth'
 
-function AuthPage() {
+interface AuthPageProps {
+  setUser: (user:User|null) => void
+}
+
+const AuthPage:React.FC<AuthPageProps> = ({setUser}) => {
   const [showRegister, setShowRegister] = useState<boolean>(false)
   return (
     <>
@@ -12,9 +17,9 @@ function AuthPage() {
         <section>
           <>
             {showRegister ? (
-              <RegisterForm />
+              <RegisterForm goToLogin={() => setShowRegister(false)}/>
             ) : (
-              <LoginForm />
+              <LoginForm setUser={setUser} />
             )}
             <div 
               className='text-sm mt-2 text-center'
