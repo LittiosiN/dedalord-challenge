@@ -11,7 +11,6 @@ const MessageForm:React.FC<MessageFormProps> = ({handleSubmit, loading}) => {
   const [newMsg, setNewMsg] = useState<string>('')
   
   const onSubmit = () => {
-    console.log("submitting", newMsg)
     handleSubmit(newMsg)
     setNewMsg('')
   }

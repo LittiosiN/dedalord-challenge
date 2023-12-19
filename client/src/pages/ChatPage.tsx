@@ -9,6 +9,7 @@ import { Response } from '../types/Response'
 import { toast } from "react-toastify";
 import Chat from "../components/Chat";
 import MessageForm from "../components/form/MessageForm";
+import { getUsers } from "../data/api/users";
 
 const socket = io(import.meta.env.VITE_SERVER_URL)
 
@@ -29,17 +30,16 @@ const ChatPage:React.FC<ChatPageProps> = ({user}) => {
   const currentMessages:Message[]|null = messages?.get(currentContact || '') || []
 
   const fillChats = (data:FullMessages[]) => {
-    const c:string[] = []
     const msgs = new Map<string,Message[]>()
     data.map((item:FullMessages) => {
-      c.push(item.username)
       msgs.set(item.username,item.value)
     })
-    setContacts(c)
     setMessages(msgs)
   }
   
   useEffect(() => {
+    getUsers(user.sessionToken)
+      .then((res:Response) => setContacts(res.data.filter((i:string) => i !== user.username)))
     getUserMessages(user.username, user.sessionToken)
     .then((res:Response) => {
       if (!res.ok) {
@@ -47,7 +47,6 @@ const ChatPage:React.FC<ChatPageProps> = ({user}) => {
         toast.error(res.message,{position: toast.POSITION.TOP_CENTER})
         return
       }
-      console.log("obtuve", res?.data)
       return res
       })
       .then(res => fillChats(res?.data))
@@ -59,29 +58,31 @@ const ChatPage:React.FC<ChatPageProps> = ({user}) => {
     },[])
     
     useEffect(() => {
-      if (lastMessageRecieved) {
-        const old = messages?.get(currentContact || '')
+      if (lastMessageRecieved && currentContact) {
+        const old = messages?.get(currentContact)
         if (old && old.length > 0) {
-          if(old[old.length-1].timestamp !== lastMessageRecieved?.timestamp && currentContact) {
+          if(old[old.length-1].timestamp !== lastMessageRecieved?.timestamp) {
             messages?.set(currentContact, [...old, lastMessageRecieved])
             setLastMessageRecieved(null)
           }
+        } else {
+          messages?.set(currentContact, [lastMessageRecieved])
+          setLastMessageRecieved(null)
         }
       }
     }, [lastMessageRecieved])
     
     const handleSubmit = (msg:string) => {
-      console.log("hola soy msg", msg)
       if(!currentContact || !user) {
         return
-    }
-    const messageData = {
-      from: user?.username,
-      to: currentContact,
-      message: msg,
-      timestamp: Date.now().toLocaleString()
-    }
-    socket.emit('sendMessage', messageData)
+      }
+      const messageData = {
+        from: user?.username,
+        to: currentContact,
+        message: msg,
+        timestamp: Date.now().toLocaleString()
+      }
+      socket.emit('sendMessage', messageData)
   }
 
   const handleSelectContact = (username:string) => {
@@ -90,7 +91,7 @@ const ChatPage:React.FC<ChatPageProps> = ({user}) => {
 
   return (
     <>
-      <main className="w-screen h-screen h-50 bg-gray-200 flex">
+      <main className="w-screen h-screen bg-gray-200 flex">
         <aside>
           <nav className="w-52">
             {loading && <>loading...</>}
@@ -99,10 +100,10 @@ const ChatPage:React.FC<ChatPageProps> = ({user}) => {
         </aside>
         <section>
           {loading && <>loading...</>}
-          {!loading && (
+          {!loading && currentContact &&(
             <>
               <div className="h-5/6 w-full">
-                <Chat messages={currentMessages}/>
+                <Chat messages={currentMessages} user={user.username}/>
               </div>
               <div className="bg-gray-700 h-full">
                 <MessageForm loading={loading} handleSubmit={handleSubmit}/>
@@ -111,7 +112,6 @@ const ChatPage:React.FC<ChatPageProps> = ({user}) => {
           )}
         </section>
       </main>
-
     </>
   )
 }

@@ -9,6 +9,6 @@ export const getUserMessages = async (username:string, token:string) => {
     },
     method: 'GET', 
   })
-  const user = await response.json()
-  return user
+  const messages = await response.json()
+  return messages
 }
