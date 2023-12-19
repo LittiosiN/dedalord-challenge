@@ -19,7 +19,7 @@ function socketHandler(server: any) {
       Logger.info('Message')
       console.log("message", messageData)
       const recipient = usersDB.getUser(messageData.to)
-      if (!recipient) {
+      if (recipient) {
         // Process and store the message data
         messagesDB.addMessage(messageData)
         // Emit message to relevant recipient via username

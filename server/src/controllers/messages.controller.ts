@@ -3,6 +3,7 @@ import Logger from '../utils/Logger'
 import { MessageDB, Message } from "../models/Message"
 import { createJsonError } from "../handlers/ErrorHandler"
 import createJsonSuccess from "../helpers/createJsonSuccess"
+import { UsersDB } from "../models/User"
 
 export const getMessages = async (req:express.Request, res:express.Response) => {
   try {
@@ -32,6 +33,20 @@ export const sendMessage = async (req:express.Request, res:express.Response) => 
     }
 
     const messagesDB = MessageDB.getInstance()
+    const usersDB = UsersDB.getInstance()
+    const userfrom = usersDB.getUser(from)
+    const userto = usersDB.getUser(to)
+    console.log("user", userfrom)
+    console.log("user to", userto)
+
+    if (!userfrom || !userto) {
+      Logger.log({
+        level: 'error',
+        message: 'no valid users for sending messages'
+      });
+      return res.status(400).json(createJsonError(400, 'no valid users for sending messages')).end()
+    }
+
     const msg = {
       from,
       to,
