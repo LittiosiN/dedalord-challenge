@@ -40,4 +40,13 @@ export class UsersDB {
     this.users.set(user.username, user)
     return this.users.get(user.username)
   }
+
+  getUserBySessionToken(sessionToken:string): User | undefined {
+    for (let [key, value] of this.users.entries()) {
+      if (value.authentication.sessionToken === sessionToken){
+        return this.users.get(key)
+      }
+    }
+    return
+  }
 }

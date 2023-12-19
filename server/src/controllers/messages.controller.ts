@@ -9,7 +9,6 @@ export const getMessages = async (req:express.Request, res:express.Response) => 
     const {username} = req.params
     const messagesDB = MessageDB.getInstance()
     const messages = messagesDB.getMessages(username)
-    console.log("geting messages", messages)
     res.status(200).json(createJsonSuccess(messages, 'Retrieving messages')).end()
   } catch (error) {
     Logger.log({
