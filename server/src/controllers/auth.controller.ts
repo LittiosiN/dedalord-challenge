@@ -5,21 +5,6 @@ import { UsersDB } from "../models/User"
 import { createJsonError } from "../handlers/ErrorHandler"
 import createJsonSuccess from "../helpers/createJsonSuccess"
 
-export const getUsers = async (req:express.Request, res:express.Response) => {
-  try {
-    const usersDB = UsersDB.getInstance()
-    const users = usersDB.getUsers()
-    console.log("users", users)
-    res.status(200).json(users).end()
-  } catch (error) {
-    Logger.log({
-      level: 'error',
-      message: 'Error retrieving users'
-    });
-    return res.status(400).json(createJsonError(400,'Error retrieving users')).end() 
-  }
-}
-
 export const login = async (req:express.Request, res:express.Response) => {
   try {
     const {username, password} = req.body
