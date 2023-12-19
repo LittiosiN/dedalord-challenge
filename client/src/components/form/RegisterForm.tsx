@@ -39,7 +39,6 @@ const RegisterForm:React.FC<RegisterFormProps> = ({goToLogin}) => {
 
   const onSubmit = (data:iRegisterInputs) => {
     setLoading(true)
-    console.log("login with data", data)
     registerUser(data).then((res:Response) => {
       if (!res.ok) {
         console.log("error", res)

@@ -80,7 +80,7 @@ const ChatPage:React.FC<ChatPageProps> = ({user}) => {
         from: user?.username,
         to: currentContact,
         message: msg,
-        timestamp: Date.now().toLocaleString()
+        timestamp: new Date().getTime()
       }
       socket.emit('sendMessage', messageData)
   }
@@ -91,26 +91,26 @@ const ChatPage:React.FC<ChatPageProps> = ({user}) => {
 
   return (
     <>
-      <main className="w-screen h-screen bg-gray-200 flex">
-        <aside>
-          <nav className="w-52">
+      <main className="w-screen h-screen bg-gray-200 lg:px-32">
+        <div className="flex">
+          <aside className="bg-gray-400">
+            <nav className="w-24 p-2 lg:w-52">
+              {loading && <>loading...</>}
+              {!loading && <ChatList list={contacts} onSelect={handleSelectContact} selected={currentContact}/>}
+            </nav>
+          </aside>
+          <section className="flex flex-col lg:w-3/4">
             {loading && <>loading...</>}
-            {!loading && <ChatList list={contacts} onSelect={handleSelectContact} selected={currentContact}/>}
-          </nav>
-        </aside>
-        <section>
-          {loading && <>loading...</>}
-          {!loading && currentContact &&(
-            <>
-              <div className="h-5/6 w-full">
+            {!loading && currentContact &&(
+              <>
                 <Chat messages={currentMessages} user={user.username}/>
-              </div>
-              <div className="bg-gray-700 h-full">
-                <MessageForm loading={loading} handleSubmit={handleSubmit}/>
-              </div>
-            </>
-          )}
-        </section>
+                <div className="bg-gray-300">
+                  <MessageForm loading={loading} handleSubmit={handleSubmit}/>
+                </div>
+              </>
+            )}
+          </section>
+        </div>
       </main>
     </>
   )

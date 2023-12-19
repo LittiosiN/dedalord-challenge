@@ -40,7 +40,6 @@ const LoginForm:React.FC<LoginFormProps> = ({setUser}) => {
 
   const onSubmit = (data:iLoginInputs) => {
     setLoading(true)
-    console.log("login with data", data)
     loginUser(data).then((res:Response) => {
       if (!res.ok) {
         console.log("error", res)
@@ -52,7 +51,6 @@ const LoginForm:React.FC<LoginFormProps> = ({setUser}) => {
         return
       }
       toast.info(res.message,{position: toast.POSITION.TOP_CENTER})
-      console.log("logged", res)
       setUser(res.data as User)
       navigate("/chats")
     }).finally(() => setLoading(false))

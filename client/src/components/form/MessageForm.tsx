@@ -18,7 +18,7 @@ const MessageForm:React.FC<MessageFormProps> = ({handleSubmit, loading}) => {
   return (
     <div
       className="
-        mt-8
+        mt-2
         sm:mx-auto
         sm:w-fullseparator
         sm:max-w-md
@@ -26,23 +26,22 @@ const MessageForm:React.FC<MessageFormProps> = ({handleSubmit, loading}) => {
     >
       <div
         className="
-          bg-white
           px-4
-          py-8
+          py-4
           sm:rounded-lg
           sm:px-10
           shadow
         "
       >
         <form
-          className="space-y-6 flex flex-col"
+          className="flex gap-2 md:gap-4"
         >
           <input
             type="text"
             value={newMsg}
             onChange={(event) => setNewMsg(event.target.value)}
             placeholder="type your message..."
-            className="rounded-md border-2 outline-none px-3 py-2 w-4/5"
+            className="rounded-md border-2 outline-none px-3 py-2 lg:w-96"
           ></input>          
           <Button
             type="submit"
