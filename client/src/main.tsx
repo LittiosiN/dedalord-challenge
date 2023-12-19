@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
-  // createBrowserRouter,
-  // RouterProvider,
   HashRouter,
   Routes,
   Route,
@@ -14,22 +12,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import './index.css'
 import { User } from './types/Auth'
 
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element: <AuthPage />,
-//   },
-//   {
-//     path: "/chats",
-//     element: <ChatPage />,
-//   },
-// ]);
 
 const Main = () => {
   const [user, setUser] = useState<User|null>(null)
 
   return(
-    <React.StrictMode>
       <>
         <HashRouter>
           <Routes>
@@ -37,10 +24,8 @@ const Main = () => {
             <Route path='/chats' element={ <ChatPage user={user}/> } />
           </Routes>
         </HashRouter>
-        {/* <RouterProvider router={router} /> */}
         <ToastContainer />
       </>
-  </React.StrictMode>
   )
 }
 

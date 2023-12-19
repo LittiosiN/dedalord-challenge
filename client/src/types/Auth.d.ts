@@ -11,5 +11,5 @@ export interface iLoginInputs {
 
 export interface User {
   username: string;
-  sessionToken?: string;
+  sessionToken: string;
 }
