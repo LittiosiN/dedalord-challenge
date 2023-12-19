@@ -99,9 +99,9 @@ const ChatPage:React.FC<ChatPageProps> = ({user}) => {
               {!loading && <ChatList list={contacts} onSelect={handleSelectContact} selected={currentContact}/>}
             </nav>
           </aside>
-          <section className="flex flex-col lg:w-3/4">
+          <section className="flex flex-col lg:w-3/4 border-black border-x-2">
             {loading && <>loading...</>}
-            {!loading && currentContact &&(
+            {!loading &&(
               <>
                 <Chat messages={currentMessages} user={user.username}/>
                 <div className="bg-gray-300">

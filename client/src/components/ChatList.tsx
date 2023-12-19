@@ -12,11 +12,11 @@ const ChatList:React.FC<ChatListProps> = ({list, onSelect, selected}) => {
   }
   return (
     <ul className="mt-5 uppercase text-base 
-    font-roboto font-semibold text-black cursor-pointer">
+    font-semibold text-black cursor-pointer">
       {
         list.map(i => 
           <li
-            className={clsx("font-bold hover:bg-gray-600",selected === i && 'bg-gray-500')}
+            className={clsx("font-bold px-2 overflow-hidden hover:bg-gray-600",selected === i && 'bg-gray-500')}
             key={"navchat-"+i}
             onClick={() => onSelect(i)}
           >{i}

@@ -41,7 +41,7 @@ const MessageForm:React.FC<MessageFormProps> = ({handleSubmit, loading}) => {
             value={newMsg}
             onChange={(event) => setNewMsg(event.target.value)}
             placeholder="type your message..."
-            className="rounded-md border-2 outline-none px-3 py-2 lg:w-96"
+            className="rounded-md border-2 outline-none lg:px-3 py-2 lg:w-96"
           ></input>          
           <Button
             type="submit"
