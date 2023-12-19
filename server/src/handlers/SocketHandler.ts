@@ -2,11 +2,14 @@ import { Message, MessageDB } from '../models/Message'
 import { UsersDB } from '../models/User'
 import { Server } from 'socket.io'
 import Logger from '../utils/Logger'
+import dotenv from 'dotenv'
+import path from 'path'
+dotenv.config({ path: path.join(__dirname, '../../.env') })
 
 function socketHandler(server: any) {
   const io = new Server(server, {
     cors:{
-      origin: "http://localhost:5173"
+      origin: process.env.CLIENT_URL || "http://localhost:5173"
     }
   })
   const messagesDB = MessageDB.getInstance()

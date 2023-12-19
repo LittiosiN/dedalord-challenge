@@ -18,7 +18,6 @@ app.use(cors())
 app.use(httpLogger)
 app.use(express.json())
 app.use(ErrorHandler);
-// app.use(express.urlencoded({ extended: false }))
 
 app.use('/', router)
 
