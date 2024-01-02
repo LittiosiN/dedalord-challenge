@@ -4,10 +4,10 @@ import Button from "../Button"
 
 interface MessageFormProps {
   handleSubmit: (msg:string) => void
-  loading: boolean
+  invalidate: boolean
 }
 
-const MessageForm:React.FC<MessageFormProps> = ({handleSubmit, loading}) => {
+const MessageForm:React.FC<MessageFormProps> = ({handleSubmit, invalidate}) => {
   const [newMsg, setNewMsg] = useState<string>('')
   
   const onSubmit = () => {
@@ -40,12 +40,13 @@ const MessageForm:React.FC<MessageFormProps> = ({handleSubmit, loading}) => {
             type="text"
             value={newMsg}
             onChange={(event) => setNewMsg(event.target.value)}
+            disabled={invalidate}
             placeholder="type your message..."
             className="rounded-md border-2 outline-none lg:px-3 py-2 lg:w-96"
           ></input>          
           <Button
             type="submit"
-            disabled={loading}
+            disabled={invalidate}
             onClick={onSubmit}
           >
             Send

@@ -105,7 +105,7 @@ const ChatPage:React.FC<ChatPageProps> = ({user}) => {
               <>
                 <Chat messages={currentMessages} user={user.username}/>
                 <div className="bg-gray-300">
-                  <MessageForm loading={loading} handleSubmit={handleSubmit}/>
+                  <MessageForm invalidate={loading || !currentContact} handleSubmit={handleSubmit}/>
                 </div>
               </>
             )}
